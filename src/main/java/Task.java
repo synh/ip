@@ -11,15 +11,22 @@ public abstract class Task {
         return this.description;
     }
 
+    public boolean getIsDone() {
+        return this.isDone;
+    }
+
+    @Override
+    public String toString() {
+        return "[" + this.getStatusIcon() + "] " + this.description;
+    }
+
     /**
      * Returns icon to demarcate type of task.
      * @return "T" for ToDo, "D" for Deadline, "E" for Event.
      */
     public abstract String getTaskIcon();
 
-    public boolean getIsDone() {
-        return this.isDone;
-    }
+
 
     /**
      * Returns icon to demarcate completion of task.

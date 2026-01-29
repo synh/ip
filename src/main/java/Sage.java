@@ -19,7 +19,7 @@ public class Sage {
                     System.out.println("These are what you set out to do:");
                     int index = 1;
                     for (Task task : taskList) {
-                        System.out.println(index + ". [" + task.getStatusIcon() + "] " + task.getDescription());
+                        System.out.println(index + "." + task);
                         index++;
                     }
                 }
@@ -42,8 +42,27 @@ public class Sage {
                     System.out.println("That task doesn't exist, apparently. Try adding it to the list first.");
                 }
             } else {
-                taskList.add(new Task(input));
-                System.out.println("added: " + input);
+                // Validate type of task
+                boolean isValid = false;
+                if (input.startsWith("todo ")) {
+                    taskList.add(new ToDo(input.substring(5)));
+                    isValid = true;
+                } else if (input.startsWith("deadline ")) {
+                    String[] parts = input.substring(9).split(" /by ");
+                    taskList.add(new Deadline(parts[0], parts[1]));
+                    isValid = true;
+                } else if (input.startsWith(("event "))) {
+                    String[] parts = input.substring(6).split(" /from | /to ");
+                    taskList.add(new Event(parts[0], parts[1], parts[2]));
+                    isValid = true;
+                } else {
+                    System.out.println("I'm afraid I didn't catch that.");
+                }
+                if (isValid) {
+                    System.out.println("Got it. I've added this task:\n"
+                            + taskList.get(taskList.size() - 1)
+                            + "\nYou've now set out to do " + String.valueOf(taskList.size()) + " thing(s).");
+                }
             }
             input = scanner.nextLine();
         }

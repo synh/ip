@@ -8,8 +8,8 @@ public class Deadline extends Task {
 
     @Override
     public String toString() {
-        return "[" + this.getTaskIcon() + "][" + this.getStatusIcon() + "] "
-                + this.getDescription() + " (by: " + this.deadline + ")";
+        return "[" + this.getTaskIcon() + "]" + super.toString()
+                + " (by: " + this.deadline + ")";
     }
 
     @Override

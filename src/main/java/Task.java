@@ -11,6 +11,12 @@ public abstract class Task {
         return this.description;
     }
 
+    /**
+     * Returns icon to demarcate type of task.
+     * @return "T" for ToDo, "D" for Deadline, "E" for Event.
+     */
+    public abstract String getTaskIcon();
+
     public boolean getIsDone() {
         return this.isDone;
     }

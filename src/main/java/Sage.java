@@ -19,7 +19,7 @@ public class Sage {
                     System.out.println("These are what you set out to do:");
                     int index = 1;
                     for (Task task : taskList) {
-                        System.out.println(index + "." + task);
+                        System.out.println(index + ". " + task);
                         index++;
                     }
                 }
@@ -27,7 +27,10 @@ public class Sage {
                 // Validate task number exists
                 int index = Integer.parseInt(input.substring(5));
                 if (1 <= index && index <= taskList.size()) {
-                    taskList.get(index - 1).markAsDone();
+                    Task task = taskList.get(index - 1);
+                    task.markAsDone();
+                    System.out.println("Got it. I've marked \"" + index + ". "
+                            + task.getDescription() + "\" as done.");
                 } else {
                     // Failed to mark
                     System.out.println("That task doesn't exist, apparently. I guess you've completed a task outside of what you set out to do.");
@@ -36,7 +39,10 @@ public class Sage {
                 // Validate task number exists
                 int index = Integer.parseInt(input.substring(7));
                 if (1 <= index && index <= taskList.size()) {
-                    taskList.get(index - 1).markAsUndone();
+                    Task task = taskList.get(index - 1);
+                    task.markAsUndone();
+                    System.out.println("Got it. I've marked \"" + index + ". "
+                            + task.getDescription() + "\" as undone.");
                 } else {
                     // Failed to unmark
                     System.out.println("That task doesn't exist, apparently. Try adding it to the list first.");
@@ -64,6 +70,7 @@ public class Sage {
                             + "\nYou've now set out to do " + String.valueOf(taskList.size()) + " thing(s).");
                 }
             }
+            System.out.println();
             input = scanner.nextLine();
         }
 

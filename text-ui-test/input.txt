@@ -1,0 +1,28 @@
+list
+todo
+todo todo1
+list
+deadline
+deadline deadline1 /by Sunday
+list
+event
+event event1 /from 2pm /to 4pm
+list
+mark abcd
+mark 0
+mark 999
+mark 1
+list
+mark 2
+list
+mark 3
+list
+unmark 1
+list
+unmark 2
+list
+unmark 3
+unmark 3
+list
+byebye
+bye

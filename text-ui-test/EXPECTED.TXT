@@ -1,7 +1,87 @@
-Hello from
- ____        _        
-|  _ \ _   _| | _____ 
-| | | | | | | |/ / _ \
-| |_| | |_| |   <  __/
-|____/ \__,_|_|\_\___|
+Hello there, Sage here.
+How are you doing?
+Oh, you have nothing you set out to do. Enjoy your day.
 
+I'm afraid I didn't catch that.
+
+Got it. I've added this task:
+[T][ ] todo1
+You've now set out to do 1 thing(s).
+
+These are what you set out to do:
+1. [T][ ] todo1
+
+I'm afraid I didn't catch that.
+
+Got it. I've added this task:
+[D][ ] deadline1 (by: Sunday)
+You've now set out to do 2 thing(s).
+
+These are what you set out to do:
+1. [T][ ] todo1
+2. [D][ ] deadline1 (by: Sunday)
+
+I'm afraid I didn't catch that.
+
+Got it. I've added this task:
+[E][ ] event1 (from: 2pm to: 4pm)
+You've now set out to do 3 thing(s).
+
+These are what you set out to do:
+1. [T][ ] todo1
+2. [D][ ] deadline1 (by: Sunday)
+3. [E][ ] event1 (from: 2pm to: 4pm)
+
+I'm afraid I didn't catch that.
+
+That task doesn't exist, apparently. I guess you've completed a task outside of what you set out to do.
+
+That task doesn't exist, apparently. I guess you've completed a task outside of what you set out to do.
+
+Got it. I've marked "1. todo1" as done.
+
+These are what you set out to do:
+1. [T][X] todo1
+2. [D][ ] deadline1 (by: Sunday)
+3. [E][ ] event1 (from: 2pm to: 4pm)
+
+Got it. I've marked "2. deadline1" as done.
+
+These are what you set out to do:
+1. [T][X] todo1
+2. [D][X] deadline1 (by: Sunday)
+3. [E][ ] event1 (from: 2pm to: 4pm)
+
+Got it. I've marked "3. event1" as done.
+
+These are what you set out to do:
+1. [T][X] todo1
+2. [D][X] deadline1 (by: Sunday)
+3. [E][X] event1 (from: 2pm to: 4pm)
+
+Got it. I've marked "1. todo1" as undone.
+
+These are what you set out to do:
+1. [T][ ] todo1
+2. [D][X] deadline1 (by: Sunday)
+3. [E][X] event1 (from: 2pm to: 4pm)
+
+Got it. I've marked "2. deadline1" as undone.
+
+These are what you set out to do:
+1. [T][ ] todo1
+2. [D][ ] deadline1 (by: Sunday)
+3. [E][X] event1 (from: 2pm to: 4pm)
+
+Got it. I've marked "3. event1" as undone.
+
+Got it. I've marked "3. event1" as undone.
+
+These are what you set out to do:
+1. [T][ ] todo1
+2. [D][ ] deadline1 (by: Sunday)
+3. [E][ ] event1 (from: 2pm to: 4pm)
+
+I'm afraid I didn't catch that.
+
+Goodbye. Have a beautiful day.

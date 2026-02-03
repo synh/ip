@@ -17,6 +17,9 @@ mark 2
 list
 mark 3
 list
+unmark abcd
+unmark 0
+unmark 999
 unmark 1
 list
 unmark 2

@@ -13,7 +13,9 @@ public class Sage {
 
         while (!input.equals("bye")) {
             try {
-                if (input.equals("list")) {
+                CommandType commandType = CommandType.fromString(input);
+                switch (commandType) {
+                case LIST:
                     if (taskList.isEmpty()) {
                         System.out.println("Oh, you have nothing you set out to do. Enjoy your day.");
                     } else {
@@ -24,7 +26,8 @@ public class Sage {
                             index++;
                         }
                     }
-                } else if (input.startsWith("mark")) {
+                    break;
+                case MARK:
                     if (input.matches("mark [0-9]+")) {
                         // Validate task number exists
                         int index = Integer.parseInt(input.substring(5));
@@ -40,7 +43,8 @@ public class Sage {
                     } else {
                         throw SageException.invalidCommand("Mark");
                     }
-                } else if (input.startsWith("unmark")) {
+                    break;
+                case UNMARK:
                     if (input.matches("unmark [0-9]+")) {
                         // Validate task number exists
                         int index = Integer.parseInt(input.substring(7));
@@ -56,7 +60,8 @@ public class Sage {
                     } else {
                         throw SageException.invalidCommand("Unmark");
                     }
-                } else if (input.startsWith("delete")) {
+                    break;
+                case DELETE:
                     if (input.matches("delete [0-9]+")) {
                         // Validate task number exists
                         int index = Integer.parseInt(input.substring(7));
@@ -73,35 +78,36 @@ public class Sage {
                     } else {
                         throw SageException.invalidCommand("Delete");
                     }
-                } else {
-                    // Validate type of task
-                    if (input.startsWith("todo")) {
-                        if (input.matches("^todo\\s+(\\S.+)")) {
-                            taskList.add(new ToDo(input.substring(5)));
-                        } else {
-                            throw SageException.invalidCommand("ToDo");
-                        }
-                    } else if (input.startsWith("deadline")) {
-                        if (input.matches("^deadline\\s+(\\S.+?)\\s+/by\\s+(\\S.+)")) {
-                            String[] parts = input.substring(9).split(" /by ");
-                            taskList.add(new Deadline(parts[0], parts[1]));
-                        } else {
-                            throw SageException.invalidCommand("Deadline");
-                        }
-                    } else if (input.startsWith(("event"))) {
-                        if (input.matches("^event\\s+(\\S.+?)\\s+/from\\s+(\\S.+?)\\s+/to\\s+(\\S.+)")) {
-                            String[] parts = input.substring(6).split(" /from | /to ");
-                            taskList.add(new Event(parts[0], parts[1], parts[2]));
-                        } else {
-                            throw SageException.invalidCommand("Event");
-                        }
+                    break;
+                case TODO:
+                    if (input.matches("^todo\\s+(\\S.+)")) {
+                        taskList.add(new ToDo(input.substring(5)));
+                        printAddedMessage(taskList);
                     } else {
+                        throw SageException.invalidCommand("ToDo");
+                    }
+                    break;
+                case DEADLINE:
+                    if (input.matches("^deadline\\s+(\\S.+?)\\s+/by\\s+(\\S.+)")) {
+                        String[] parts = input.substring(9).split(" /by ");
+                        taskList.add(new Deadline(parts[0], parts[1]));
+                        printAddedMessage(taskList);
+                    } else {
+                        throw SageException.invalidCommand("Deadline");
+                    }
+                    break;
+                case EVENT:
+                    if (input.matches("^event\\s+(\\S.+?)\\s+/from\\s+(\\S.+?)\\s+/to\\s+(\\S.+)")) {
+                        String[] parts = input.substring(6).split(" /from | /to ");
+                        taskList.add(new Event(parts[0], parts[1], parts[2]));
+                        printAddedMessage(taskList);
+                    } else {
+                        throw SageException.invalidCommand("Event");
+                    }
+                    break;
+                case UNKNOWN:
                         throw SageException.unknownCommand();
                     }
-                    System.out.println("Got it. I've added this task:\n"
-                            + taskList.get(taskList.size() - 1)
-                            + "\nYou've now set out to do " + String.valueOf(taskList.size()) + " thing(s).");
-                }
             } catch (Exception e) { // Catch all exceptions
                 System.out.print(e.getMessage());
             }
@@ -111,5 +117,15 @@ public class Sage {
 
         System.out.println("Goodbye. Have a beautiful day.");
         scanner.close();
+    }
+
+    /**
+     * Prints message for succesful addition of Task.
+     * @param taskList
+     */
+    private static void printAddedMessage(ArrayList<Task> taskList) {
+        System.out.println("Got it. I've added this task:\n"
+                + taskList.get(taskList.size() - 1)
+                + "\nYou've now set out to do " + String.valueOf(taskList.size()) + " thing(s).");
     }
 }

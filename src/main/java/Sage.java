@@ -56,6 +56,23 @@ public class Sage {
                     } else {
                         throw SageException.invalidCommand("Unmark");
                     }
+                } else if (input.startsWith("delete")) {
+                    if (input.matches("delete [0-9]+")) {
+                        // Validate task number exists
+                        int index = Integer.parseInt(input.substring(7));
+                        if (1 <= index && index <= taskList.size()) {
+                            Task task = taskList.get(index - 1);
+                            taskList.remove(index - 1);
+                            System.out.println("Got it. I've removed \"" + index + ". "
+                                    + task.getDescription() + "\"."
+                                    + "\nYou've now set out to do " + String.valueOf(taskList.size()) + " thing(s).");
+                        } else {
+                            // Failed to delete
+                            throw SageException.invalidTaskNumber();
+                        }
+                    } else {
+                        throw SageException.invalidCommand("Delete");
+                    }
                 } else {
                     // Validate type of task
                     if (input.startsWith("todo")) {

@@ -8,7 +8,7 @@ public class SageException extends Exception {
      * @return SageException
      */
     public static SageException invalidTaskNumber() {
-        return new SageException("That task doesn't exist, apparently. I guess you've completed a task outside of what you set out to do.\n");
+        return new SageException("That task doesn't exist, apparently.\n");
     }
 
     /**

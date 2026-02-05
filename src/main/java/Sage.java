@@ -1,12 +1,19 @@
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
 
 public class Sage {
-    public static void main(String[] args) throws SageException {
+    public static void main(String[] args) throws SageException, IOException {
         System.out.println("Hello there, Sage here.");
         System.out.println("How are you doing?");
 
-        ArrayList<Task> taskList = new ArrayList<Task>();
+        ArrayList<Task> taskList = new ArrayList<>();
+        // Try loading tasks from file at startup
+        try {
+            taskList = Storage.loadTasks();
+        } catch (IOException e) {
+            System.out.print(e.getMessage());
+        }
 
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
@@ -34,6 +41,7 @@ public class Sage {
                         if (1 <= index && index <= taskList.size()) {
                             Task task = taskList.get(index - 1);
                             task.markAsDone();
+                            Storage.saveTasks(taskList);
                             System.out.println("Got it. I've marked \"" + index + ". "
                                     + task.getDescription() + "\" as done.");
                         } else {
@@ -51,6 +59,7 @@ public class Sage {
                         if (1 <= index && index <= taskList.size()) {
                             Task task = taskList.get(index - 1);
                             task.markAsUndone();
+                            Storage.saveTasks(taskList);
                             System.out.println("Got it. I've marked \"" + index + ". "
                                     + task.getDescription() + "\" as undone.");
                         } else {
@@ -68,6 +77,7 @@ public class Sage {
                         if (1 <= index && index <= taskList.size()) {
                             Task task = taskList.get(index - 1);
                             taskList.remove(index - 1);
+                            Storage.saveTasks(taskList);
                             System.out.println("Got it. I've removed \"" + index + ". "
                                     + task.getDescription() + "\"."
                                     + "\nYou've now set out to do " + String.valueOf(taskList.size()) + " thing(s).");
@@ -82,6 +92,7 @@ public class Sage {
                 case TODO:
                     if (input.matches("^todo\\s+(\\S.+)")) {
                         taskList.add(new ToDo(input.substring(5)));
+                        Storage.saveTasks(taskList);
                         printAddedMessage(taskList);
                     } else {
                         throw SageException.invalidCommand("ToDo");
@@ -91,6 +102,7 @@ public class Sage {
                     if (input.matches("^deadline\\s+(\\S.+?)\\s+/by\\s+(\\S.+)")) {
                         String[] parts = input.substring(9).split(" /by ");
                         taskList.add(new Deadline(parts[0], parts[1]));
+                        Storage.saveTasks(taskList);
                         printAddedMessage(taskList);
                     } else {
                         throw SageException.invalidCommand("Deadline");
@@ -100,6 +112,7 @@ public class Sage {
                     if (input.matches("^event\\s+(\\S.+?)\\s+/from\\s+(\\S.+?)\\s+/to\\s+(\\S.+)")) {
                         String[] parts = input.substring(6).split(" /from | /to ");
                         taskList.add(new Event(parts[0], parts[1], parts[2]));
+                        Storage.saveTasks(taskList);
                         printAddedMessage(taskList);
                     } else {
                         throw SageException.invalidCommand("Event");
@@ -115,12 +128,19 @@ public class Sage {
             input = scanner.nextLine();
         }
 
+        // Save tasks before exiting
+        try {
+            Storage.saveTasks(taskList);
+        } catch (IOException e) {
+            System.out.print(e.getMessage());
+        }
+
         System.out.println("Goodbye. Have a beautiful day.");
         scanner.close();
     }
 
     /**
-     * Prints message for succesful addition of Task.
+     * Prints message for successful addition of Task.
      * @param taskList
      */
     private static void printAddedMessage(ArrayList<Task> taskList) {

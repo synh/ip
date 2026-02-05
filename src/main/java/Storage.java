@@ -6,6 +6,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.time.LocalDate;
+
 public class Storage {
     private static final String FILE_PATH = "./data/sage.txt";
     private static final String DIRECTORY_PATH = "./data/";
@@ -85,12 +87,12 @@ public class Storage {
             break;
         case "D":
             if (parts.length >= 4) {
-                task = new Deadline(description, parts[3]);
+                task = new Deadline(description, LocalDate.parse(parts[3]));
             }
             break;
         case "E":
             if (parts.length >= 5) {
-                task = new Event(description, parts[3], parts[4]);
+                task = new Event(description, LocalDate.parse(parts[3]), LocalDate.parse(parts[4]));
             }
             break;
         }

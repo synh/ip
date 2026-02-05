@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -12,7 +13,7 @@ public class Sage {
         try {
             taskList = Storage.loadTasks();
         } catch (IOException e) {
-            System.out.print(e.getMessage());
+            System.out.print("Saved tasks could not be loaded.");
         }
 
         Scanner scanner = new Scanner(System.in);
@@ -101,7 +102,7 @@ public class Sage {
                 case DEADLINE:
                     if (input.matches("^deadline\\s+(\\S.+?)\\s+/by\\s+(\\S.+)")) {
                         String[] parts = input.substring(9).split(" /by ");
-                        taskList.add(new Deadline(parts[0], parts[1]));
+                        taskList.add(new Deadline(parts[0], LocalDate.parse(parts[1])));
                         Storage.saveTasks(taskList);
                         printAddedMessage(taskList);
                     } else {
@@ -111,7 +112,7 @@ public class Sage {
                 case EVENT:
                     if (input.matches("^event\\s+(\\S.+?)\\s+/from\\s+(\\S.+?)\\s+/to\\s+(\\S.+)")) {
                         String[] parts = input.substring(6).split(" /from | /to ");
-                        taskList.add(new Event(parts[0], parts[1], parts[2]));
+                        taskList.add(new Event(parts[0], LocalDate.parse(parts[1]), LocalDate.parse(parts[2])));
                         Storage.saveTasks(taskList);
                         printAddedMessage(taskList);
                     } else {
@@ -132,7 +133,7 @@ public class Sage {
         try {
             Storage.saveTasks(taskList);
         } catch (IOException e) {
-            System.out.print(e.getMessage());
+            System.out.print("Tasks could not be saved.");
         }
 
         System.out.println("Goodbye. Have a beautiful day.");

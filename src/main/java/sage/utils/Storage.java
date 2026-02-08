@@ -1,12 +1,19 @@
+package sage.utils;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 
 import java.time.LocalDate;
+
+import sage.tasks.Task;
+import sage.tasks.ToDo;
+import sage.tasks.Deadline;
+import sage.tasks.Event;
+import sage.tasks.TaskList;
 
 public class Storage {
     private static final String FILE_PATH = "./data/sage.txt";
@@ -119,10 +126,10 @@ public class Storage {
             return type + " | " + isDone + " | " + description;
         } else if (task instanceof Deadline) {
             Deadline deadline = (Deadline) task;
-            return type + " | " + isDone + " | " + description + " | " + deadline.deadline;
+            return type + " | " + isDone + " | " + description + " | " + deadline.getDeadline();
         } else if (task instanceof Event) {
             Event event = (Event) task;
-            return type + " | " + isDone + " | " + description + " | " + event.start + " | " + event.end;
+            return type + " | " + isDone + " | " + description + " | " + event.getStart() + " | " + event.getEnd();
         }
         return ""; // Should not reach here
     }

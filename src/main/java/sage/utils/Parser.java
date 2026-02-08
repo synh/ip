@@ -1,7 +1,14 @@
+package sage.utils;
+
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Scanner;
+
+import sage.SageException;
+import sage.tasks.Task;
+import sage.tasks.ToDo;
+import sage.tasks.Deadline;
+import sage.tasks.Event;
+import sage.tasks.TaskList;
 
 public class Parser {
     public static void parse(TaskList taskList) {

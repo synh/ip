@@ -1,3 +1,5 @@
+package sage.tasks;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -9,6 +11,14 @@ public class Event extends Task {
         super(description);
         this.start = start;
         this.end = end;
+    }
+
+    public LocalDate getStart() {
+        return this.start;
+    }
+
+    public LocalDate getEnd() {
+        return this.end;
     }
 
     @Override

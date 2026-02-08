@@ -1,3 +1,5 @@
+package sage.utils;
+
 /**
  * Enum representing all valid command types for the Sage chatbot.
  */

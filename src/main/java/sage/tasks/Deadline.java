@@ -1,3 +1,5 @@
+package sage.tasks;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -7,6 +9,10 @@ public class Deadline extends Task {
     public Deadline(String description, LocalDate deadline) {
         super(description);
         this.deadline = deadline;
+    }
+
+    public LocalDate getDeadline() {
+        return this.deadline;
     }
 
     @Override

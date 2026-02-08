@@ -20,6 +20,14 @@ public class SageException extends Exception {
     }
 
     /**
+     * Returns SageException with error message for invalid date format.
+     * @return SageException
+     */
+    public static SageException invalidDate() {
+        return new SageException("That's an invalid date. Date should be in YYYY-MM-DD format.");
+    }
+
+    /**
      * Returns SageException with error message for remaining unknown errors.
      * @return SageException
      */

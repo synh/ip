@@ -5,10 +5,10 @@ import java.util.ArrayList;
 
 public class Sage {
     public static void main(String[] args) throws SageException, IOException {
-        System.out.println("Hello there, Sage here.");
-        System.out.println("How are you doing?");
+        Ui.printHello();
 
-        ArrayList<Task> taskList = new ArrayList<>();
+        TaskList taskList = new TaskList();
+
         // Try loading tasks from file at startup
         try {
             taskList = Storage.loadTasks();
@@ -16,118 +16,7 @@ public class Sage {
             System.out.print("Saved tasks could not be loaded.");
         }
 
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
-
-        while (!input.equals("bye")) {
-            try {
-                CommandType commandType = CommandType.fromString(input);
-                switch (commandType) {
-                case LIST:
-                    if (taskList.isEmpty()) {
-                        System.out.println("Oh, you have nothing you set out to do. Enjoy your day.");
-                    } else {
-                        System.out.println("These are what you set out to do:");
-                        int index = 1;
-                        for (Task task : taskList) {
-                            System.out.println(index + ". " + task);
-                            index++;
-                        }
-                    }
-                    break;
-                case MARK:
-                    if (input.matches("mark [0-9]+")) {
-                        // Validate task number exists
-                        int index = Integer.parseInt(input.substring(5));
-                        if (1 <= index && index <= taskList.size()) {
-                            Task task = taskList.get(index - 1);
-                            task.markAsDone();
-                            Storage.saveTasks(taskList);
-                            System.out.println("Got it. I've marked \"" + index + ". "
-                                    + task.getDescription() + "\" as done.");
-                        } else {
-                            // Failed to mark
-                            throw SageException.invalidTaskNumber();
-                        }
-                    } else {
-                        throw SageException.invalidCommand("Mark");
-                    }
-                    break;
-                case UNMARK:
-                    if (input.matches("unmark [0-9]+")) {
-                        // Validate task number exists
-                        int index = Integer.parseInt(input.substring(7));
-                        if (1 <= index && index <= taskList.size()) {
-                            Task task = taskList.get(index - 1);
-                            task.markAsUndone();
-                            Storage.saveTasks(taskList);
-                            System.out.println("Got it. I've marked \"" + index + ". "
-                                    + task.getDescription() + "\" as undone.");
-                        } else {
-                            // Failed to unmark
-                            throw SageException.invalidTaskNumber();
-                        }
-                    } else {
-                        throw SageException.invalidCommand("Unmark");
-                    }
-                    break;
-                case DELETE:
-                    if (input.matches("delete [0-9]+")) {
-                        // Validate task number exists
-                        int index = Integer.parseInt(input.substring(7));
-                        if (1 <= index && index <= taskList.size()) {
-                            Task task = taskList.get(index - 1);
-                            taskList.remove(index - 1);
-                            Storage.saveTasks(taskList);
-                            System.out.println("Got it. I've removed \"" + index + ". "
-                                    + task.getDescription() + "\"."
-                                    + "\nYou've now set out to do " + String.valueOf(taskList.size()) + " thing(s).");
-                        } else {
-                            // Failed to delete
-                            throw SageException.invalidTaskNumber();
-                        }
-                    } else {
-                        throw SageException.invalidCommand("Delete");
-                    }
-                    break;
-                case TODO:
-                    if (input.matches("^todo\\s+(\\S.+)")) {
-                        taskList.add(new ToDo(input.substring(5)));
-                        Storage.saveTasks(taskList);
-                        printAddedMessage(taskList);
-                    } else {
-                        throw SageException.invalidCommand("ToDo");
-                    }
-                    break;
-                case DEADLINE:
-                    if (input.matches("^deadline\\s+(\\S.+?)\\s+/by\\s+(\\S.+)")) {
-                        String[] parts = input.substring(9).split(" /by ");
-                        taskList.add(new Deadline(parts[0], LocalDate.parse(parts[1])));
-                        Storage.saveTasks(taskList);
-                        printAddedMessage(taskList);
-                    } else {
-                        throw SageException.invalidCommand("Deadline");
-                    }
-                    break;
-                case EVENT:
-                    if (input.matches("^event\\s+(\\S.+?)\\s+/from\\s+(\\S.+?)\\s+/to\\s+(\\S.+)")) {
-                        String[] parts = input.substring(6).split(" /from | /to ");
-                        taskList.add(new Event(parts[0], LocalDate.parse(parts[1]), LocalDate.parse(parts[2])));
-                        Storage.saveTasks(taskList);
-                        printAddedMessage(taskList);
-                    } else {
-                        throw SageException.invalidCommand("Event");
-                    }
-                    break;
-                case UNKNOWN:
-                        throw SageException.unknownCommand();
-                    }
-            } catch (Exception e) { // Catch all exceptions
-                System.out.print(e.getMessage());
-            }
-            System.out.println();
-            input = scanner.nextLine();
-        }
+        Parser.parse(taskList);
 
         // Save tasks before exiting
         try {
@@ -136,17 +25,6 @@ public class Sage {
             System.out.print("Tasks could not be saved.");
         }
 
-        System.out.println("Goodbye. Have a beautiful day.");
-        scanner.close();
-    }
-
-    /**
-     * Prints message for successful addition of Task.
-     * @param taskList
-     */
-    private static void printAddedMessage(ArrayList<Task> taskList) {
-        System.out.println("Got it. I've added this task:\n"
-                + taskList.get(taskList.size() - 1)
-                + "\nYou've now set out to do " + String.valueOf(taskList.size()) + " thing(s).");
+        Ui.printGoodbye();
     }
 }

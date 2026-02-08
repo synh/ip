@@ -18,12 +18,12 @@ public class Storage {
      * @return List of tasks loaded from file
      * @throws IOException If error reading from file
      */
-    public static ArrayList<Task> loadTasks() throws IOException {
-        ArrayList<Task> tasks = new ArrayList<>();
+    public static TaskList loadTasks() throws IOException {
+        TaskList tasks = new TaskList();
 
         File file = new File(FILE_PATH);
         if (!file.exists()) {
-            return tasks; // Return empty list if file doesn't exist
+            return tasks;
         }
 
         List<String> lines = Files.readAllLines(Paths.get(FILE_PATH));
@@ -32,7 +32,7 @@ public class Storage {
             try {
                 Task task = parseTaskFromFile(line);
                 if (task != null) {
-                    tasks.add(task);
+                    tasks.addTask(task);
                 }
             } catch (Exception e) {
                 System.out.println("Warning: Could not parse line: " + line);
@@ -48,7 +48,7 @@ public class Storage {
      * @param tasks The array of tasks to save
      * @throws IOException If error writing to file
      */
-    public static void saveTasks(ArrayList<Task> tasks) throws IOException {
+    public static void saveTasks(TaskList tasks) throws IOException {
         // Create directory if it doesn't exist
         File directory = new File(DIRECTORY_PATH);
         if (!directory.exists()) {
@@ -57,8 +57,8 @@ public class Storage {
 
         // Write tasks to file
         FileWriter writer = new FileWriter(FILE_PATH);
-        for (Task task : tasks) {
-            writer.write(taskToFileString(task) + System.lineSeparator());
+        for (int i = 0; i < tasks.getSize(); i++) {
+            writer.write(taskToFileString(tasks.getTask(i)) + System.lineSeparator());
         }
         writer.close();
     }

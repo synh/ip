@@ -23,14 +23,6 @@ public abstract class Task {
     }
 
     /**
-     * Returns icon to demarcate type of task.
-     * @return "T" for ToDo, "D" for Deadline, "E" for Event.
-     */
-    public abstract String getTaskIcon();
-
-
-
-    /**
      * Returns icon to demarcate completion of task.
      *
      * @return "X" if task is done, else " ".

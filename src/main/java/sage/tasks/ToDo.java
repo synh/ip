@@ -7,11 +7,6 @@ public class ToDo extends Task {
 
     @Override
     public String toString() {
-        return "[" + this.getTaskIcon() + "]" + super.toString();
-    }
-
-    @Override
-    public String getTaskIcon() {
-        return "T";
+        return "[T]" + super.toString();
     }
 }

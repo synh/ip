@@ -118,18 +118,17 @@ public class Storage {
      * @return Task in string format
      */
     private static String taskToFileString(Task task) {
-        String type = task.getTaskIcon(); // T, D, or E
         String isDone = task.getIsDone() ? "1" : "0";
         String description = task.getDescription();
 
         if (task instanceof ToDo) {
-            return type + " | " + isDone + " | " + description;
+            return "T | " + isDone + " | " + description;
         } else if (task instanceof Deadline) {
             Deadline deadline = (Deadline) task;
-            return type + " | " + isDone + " | " + description + " | " + deadline.getDeadline();
+            return "D | " + isDone + " | " + description + " | " + deadline.getDeadline();
         } else if (task instanceof Event) {
             Event event = (Event) task;
-            return type + " | " + isDone + " | " + description + " | " + event.getStart() + " | " + event.getEnd();
+            return "E | " + isDone + " | " + description + " | " + event.getStart() + " | " + event.getEnd();
         }
         return ""; // Should not reach here
     }

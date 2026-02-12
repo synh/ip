@@ -2,20 +2,33 @@ package sage.tasks;
 
 import java.util.ArrayList;
 
+/**
+ * Stores a list of Tasks, with functionality for reading and modifying the list.
+ */
 public class TaskList {
     private final ArrayList<Task> tasks;
 
     public TaskList() {
         this.tasks = new ArrayList<Task>();
     }
+
     public TaskList(ArrayList<Task> tasks) {
         this.tasks = tasks;
     }
 
+    /**
+     * Returns number of tasks in TaskList.
+     *
+     * @return number of tasks.
+     */
     public int getSize() {
         return tasks.size();
     }
 
+    /** Returns whether TaskList is empty.
+     *
+     * @return True if empty, false otherwise.
+     */
     public boolean isEmpty() {
         return getSize() == 0;
     }
@@ -28,10 +41,18 @@ public class TaskList {
         return tasks.get(index).getDescription();
     }
 
+    /**
+     * Appends Task to end of TaskList.
+     */
     public void addTask(Task task) {
         tasks.add(task);
     }
 
+    /**
+     * Removes Task from TaskList.
+     *
+     * @param index Zero-indexed position of Task in TaskList to be deleted.
+     */
     public void deleteTask(int index) {
         tasks.remove(index);
     }

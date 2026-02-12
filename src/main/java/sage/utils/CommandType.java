@@ -10,8 +10,8 @@ public enum CommandType {
     /**
      * Parses a string input to determine the command type.
      *
-     * @param input The user input string
-     * @return The corresponding CommandType, or UNKNOWN if not recognized
+     * @param input The user input string.
+     * @return The corresponding CommandType, or UNKNOWN if not recognised.
      */
     public static CommandType fromString(String input) {
         if (input == null || input.trim().isEmpty()) {

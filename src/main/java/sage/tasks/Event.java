@@ -23,13 +23,8 @@ public class Event extends Task {
 
     @Override
     public String toString() {
-        return "[" + this.getTaskIcon() + "]" + super.toString()
+        return "[E]" + super.toString()
                 + " (from: " + this.start.format(DateTimeFormatter.ofPattern("d MMM yyyy"))
                 + " to: " + this.end.format(DateTimeFormatter.ofPattern("d MMM yyyy")) + ")";
-    }
-
-   @Override
-    public String getTaskIcon() {
-        return "E";
     }
 }

@@ -17,12 +17,7 @@ public class Deadline extends Task {
 
     @Override
     public String toString() {
-        return "[" + this.getTaskIcon() + "]" + super.toString()
+        return "[D]" + super.toString()
                 + " (by: " + this.deadline.format(DateTimeFormatter.ofPattern("d MMM yyyy")) + ")";
-    }
-
-    @Override
-    public String getTaskIcon() {
-        return "D";
     }
 }

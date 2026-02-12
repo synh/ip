@@ -1,5 +1,6 @@
 package sage.tasks;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class TaskList {
@@ -34,6 +35,16 @@ public class TaskList {
 
     public void deleteTask(int index) {
         tasks.remove(index);
+    }
+
+    public TaskList findTask(String keyword) {
+        TaskList foundList = new TaskList();
+        for (Task task : tasks) {
+            if (task.getDescription().contains(keyword)) {
+                foundList.addTask(task);
+            }
+        }
+        return foundList;
     }
 
     public void printTaskList() {

@@ -18,6 +18,15 @@ public class Ui {
         }
     }
 
+    public static void printFoundList(TaskList foundList) {
+        if (foundList.isEmpty()) {
+            System.out.println("Oh, there are no matching tasks.");
+        } else {
+            System.out.println("Here are the matching tasks in your list:");
+            foundList.printTaskList();
+        }
+    }
+
     public static void printMarkSuccess(Task task, int index) {
         System.out.println("Got it. I've marked \"" + index + ". "
                 + task.getDescription() + "\" as done.");

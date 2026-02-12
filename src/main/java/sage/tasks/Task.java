@@ -1,5 +1,8 @@
 package sage.tasks;
 
+/**
+ * Stores a task that has a description, and a boolean indicating completion.
+ */
 public abstract class Task {
     protected String description;
     protected boolean isDone;
@@ -40,14 +43,14 @@ public abstract class Task {
     }
 
     /**
-     * Marks task as done
+     * Marks task as done.
      */
     public void markAsDone() {
         this.isDone = true;
     }
 
     /**
-     * Marks task as undone
+     * Marks task as undone.
      */
     public void markAsUndone() {
         this.isDone = false;

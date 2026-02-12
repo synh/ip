@@ -3,6 +3,9 @@ package sage.tasks;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Stores a Task that has a start and end date.
+ */
 public class Event extends Task {
     protected LocalDate start;
     protected LocalDate end;
@@ -21,6 +24,12 @@ public class Event extends Task {
         return this.end;
     }
 
+    /**
+     * Returns Event formatted as a String.
+     * Includes event indicator "E", description, start date and end date.
+     *
+     * @return Event formatted as a String.
+     */
     @Override
     public String toString() {
         return "[" + this.getTaskIcon() + "]" + super.toString()

@@ -15,6 +15,9 @@ import sage.tasks.Deadline;
 import sage.tasks.Event;
 import sage.tasks.TaskList;
 
+/**
+ * Handles storage of TaskList into a text file.
+ */
 public class Storage {
     private static final String FILE_PATH = "./data/sage.txt";
     private static final String DIRECTORY_PATH = "./data/";
@@ -22,8 +25,8 @@ public class Storage {
     /**
      * Loads tasks from file.
      *
-     * @return List of tasks loaded from file
-     * @throws IOException If error reading from file
+     * @return List of tasks loaded from file.
+     * @throws IOException If error reading from file.
      */
     public static TaskList loadTasks() throws IOException {
         TaskList tasks = new TaskList();
@@ -52,8 +55,7 @@ public class Storage {
     /**
      * Saves all tasks to file.
      *
-     * @param tasks The array of tasks to save
-     * @throws IOException If error writing to file
+     * @throws IOException If error writing to file.
      */
     public static void saveTasks(TaskList tasks) throws IOException {
         // Create directory if it doesn't exist
@@ -73,7 +75,7 @@ public class Storage {
     /**
      * Parses a file line and returns a Task subclass object.
      *
-     * @return Task subclass
+     * @return Task subclass.
      */
     private static Task parseTaskFromFile(String line) {
         String[] parts = line.split(" \\| ");
@@ -114,8 +116,7 @@ public class Storage {
     /**
      * Converts and returns a task to file format string.
      *
-     * @param task Task to convert
-     * @return Task in string format
+     * @return Task in string format.
      */
     private static String taskToFileString(Task task) {
         String type = task.getTaskIcon(); // T, D, or E

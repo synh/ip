@@ -10,7 +10,13 @@ import sage.tasks.Deadline;
 import sage.tasks.Event;
 import sage.tasks.TaskList;
 
+/**
+ * Parses user input.
+ */
 public class Parser {
+    /**
+     * Main logic of chatbot that parses user input.
+     */
     public static void parse(TaskList taskList) {
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();

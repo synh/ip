@@ -5,7 +5,8 @@ package sage.utils;
  */
 public enum CommandType {
     LIST, BYE, MARK, UNMARK, DELETE,
-    TODO, DEADLINE, EVENT, UNKNOWN;
+    TODO, DEADLINE, EVENT, FIND,
+    UNKNOWN;
 
     /**
      * Parses a string input to determine the command type.
@@ -37,6 +38,8 @@ public enum CommandType {
             return DEADLINE;
         case "event":
             return EVENT;
+        case "find":
+            return FIND;
         default:
             return UNKNOWN;
         }

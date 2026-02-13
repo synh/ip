@@ -24,6 +24,16 @@ public class Ui {
         }
     }
 
+    public static void printFoundList(TaskList foundList) {
+        if (foundList.isEmpty()) {
+            System.out.println("Oh, there are no matching tasks.");
+        } else {
+            System.out.println("Here are the matching tasks in your list:");
+            foundList.printTaskList();
+        }
+    }
+
+
     /**
      * Prints statement indicating successful mark.
      *

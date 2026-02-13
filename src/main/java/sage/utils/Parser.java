@@ -123,6 +123,14 @@ public class Parser {
                         throw SageException.invalidCommand("Event");
                     }
                     break;
+                case FIND:
+                    if (parts.length == 2) {
+                        TaskList foundList = taskList.findTask(parts[1].trim());
+                        Ui.printFoundList(foundList);
+                    } else {
+                        throw SageException.invalidCommand("Find");
+                    }
+                    break;
                 case UNKNOWN:
                     throw SageException.unknownCommand();
                 }

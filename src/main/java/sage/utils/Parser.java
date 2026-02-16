@@ -42,7 +42,7 @@ public class Parser {
         case FIND:
             return processFindCommand();
         default:
-            throw SageException.unknownCommand();
+            throw new SageException("I'm afraid I didn't catch that.\n");
         }
     }
 
@@ -103,52 +103,64 @@ public class Parser {
 
     public String processTodoCommand() throws SageException {
         if (parts.length > 1) {
-            taskList.addTask(new ToDo(input.substring(5)));
-            Storage.saveTasks(taskList);
-            return Ui.printAddedSuccess(taskList);
+            return addTodoTask();
         } else {
             throw SageException.invalidCommand("ToDo");
         }
+    }
+
+    public String addTodoTask() throws SageException {
+        taskList.addTask(new ToDo(input.substring(5)));
+        Storage.saveTasks(taskList);
+        return Ui.printAddedSuccess(taskList);
     }
 
     public String processDeadlineCommand() throws SageException {
         if (input.matches("^deadline\\s+(\\S.+?)\\s+/by\\s+(\\S.+)")) {
             String[] deadlinePart = input.split("/by");
             if (deadlinePart.length == 2) {
-                String description = deadlinePart[0].replaceFirst("^deadline\\s+", "").trim(); // Remove "deadline" command
-                try {
-                    LocalDate deadline = LocalDate.parse(deadlinePart[1].trim());
-                    taskList.addTask(new Deadline(description, deadline));
-                    Storage.saveTasks(taskList);
-                    return Ui.printAddedSuccess(taskList);
-                } catch (Exception e) {
-                    throw SageException.invalidDate();
-                }
+                return addDeadlineTask(deadlinePart);
             }
         }
         throw SageException.invalidCommand("Deadline");
+    }
+
+    public String addDeadlineTask(String[] deadlinePart) throws SageException {
+        String description = deadlinePart[0].replaceFirst("^deadline\\s+", "").trim(); // Remove "deadline" command
+        try {
+            LocalDate deadline = LocalDate.parse(deadlinePart[1].trim());
+            taskList.addTask(new Deadline(description, deadline));
+            Storage.saveTasks(taskList);
+            return Ui.printAddedSuccess(taskList);
+        } catch (Exception e) {
+            throw SageException.invalidDate();
+        }
     }
 
     public String processEventCommand() throws SageException {
         if (input.matches("^event\\s+(\\S.+?)\\s+/from\\s+(\\S.+?)\\s+/to\\s+(\\S.+)")) {
             String[] eventPart = input.split(" /from | /to ");
             if (eventPart.length == 3) {
-                String description = eventPart[0].replaceFirst("^event\\s+", "").trim(); // Remove "event" command
-                try {
-                    LocalDate from = LocalDate.parse(eventPart[1].trim());
-                    LocalDate to = LocalDate.parse(eventPart[2].trim());
-                    taskList.addTask(new Event(description, from, to));
-                    Storage.saveTasks(taskList);
-                    return Ui.printAddedSuccess(taskList);
-                } catch (Exception e) {
-                    throw SageException.invalidDate();
-                }
+                return addEventTask(eventPart);
             }
         }
         throw SageException.invalidCommand("Event");
     }
 
-    public String processFindCommand() throws SageException {
+    public String addEventTask(String[] eventPart) throws SageException {
+        String description = eventPart[0].replaceFirst("^event\\s+", "").trim(); // Remove "event" command
+        try {
+            LocalDate from = LocalDate.parse(eventPart[1].trim());
+            LocalDate to = LocalDate.parse(eventPart[2].trim());
+            taskList.addTask(new Event(description, from, to));
+            Storage.saveTasks(taskList);
+            return Ui.printAddedSuccess(taskList);
+        } catch (Exception e) {
+            throw SageException.invalidDate();
+        }
+    }
+
+        public String processFindCommand() throws SageException {
         if (parts.length == 2) {
             TaskList foundList = taskList.findTask(parts[1].trim());
             return Ui.printFoundList(foundList);

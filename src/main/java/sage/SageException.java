@@ -31,13 +31,4 @@ public class SageException extends Exception {
     public static SageException invalidDate() {
         return new SageException("That's an invalid date. Date should be in YYYY-MM-DD format.");
     }
-
-    /**
-     * Returns SageException with error message for remaining unknown errors.
-     *
-     * @return SageException.
-     */
-    public static SageException unknownCommand() {
-        return new SageException("I'm afraid I didn't catch that.\n");
-    }
 }

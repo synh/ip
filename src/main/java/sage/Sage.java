@@ -12,7 +12,6 @@ public class Sage {
         Ui.printHello();
 
         TaskList taskList;
-
         // Try loading tasks from file at startup
         try {
             taskList = Storage.loadTasks();
@@ -20,7 +19,8 @@ public class Sage {
             throw new SageException("Saved tasks could not be loaded. \nReason: " + e.getMessage());
         }
 
-        Parser.parse(taskList);
+        Parser parser = new Parser(taskList);
+        parser.parse();
 
         // Save tasks before exiting
         Storage.saveTasks(taskList);

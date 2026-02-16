@@ -37,4 +37,9 @@ public class Event extends Task {
                 + " (from: " + this.start.format(formatter)
                 + " to: " + this.end.format(formatter) + ")";
     }
+
+    @Override
+    public String toFileString() {
+        return "E | " + (isDone ? "1" : "0") + " | " + description + " | " + start + " | " + end;
+    }
 }

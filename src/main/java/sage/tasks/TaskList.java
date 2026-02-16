@@ -34,7 +34,7 @@ public class TaskList {
     }
 
     public Task getTask(int index) {
-        return tasks.get(index); //! passing by reference, not safe?
+        return tasks.get(index);
     }
 
     public String getDescription(int index) {

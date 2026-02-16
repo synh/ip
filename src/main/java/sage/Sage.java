@@ -1,34 +1,54 @@
 package sage;
 
-import java.io.IOException;
-
 import sage.utils.Parser;
 import sage.utils.Storage;
 import sage.utils.Ui;
 import sage.tasks.TaskList;
 
 public class Sage {
-    public static void main(String[] args) throws SageException, IOException {
-        Ui.printHello();
+    protected TaskList taskList = new TaskList();
+    protected Parser parser;
 
-        TaskList taskList = new TaskList();
-
+    public void loadTasks() throws SageException {
         // Try loading tasks from file at startup
         try {
             taskList = Storage.loadTasks();
-        } catch (IOException e) {
-            System.out.print("Saved tasks could not be loaded.");
+        } catch (SageException e) {
+            throw new SageException("Saved tasks could not be loaded. \nReason: " + e.getMessage());
         }
+        parser = new Parser(taskList);
+    }
 
-        Parser.parse(taskList);
+    public String getHello() {
+        return Ui.printHello();
+    }
 
-        // Save tasks before exiting
+    /**
+     * Tries to save tasks before exiting.
+     * If saving fails, will show error message, but exits anyway.
+     */
+    public String saveTasksAndExit() {
+        String output = "";
         try {
             Storage.saveTasks(taskList);
-        } catch (IOException e) {
-            System.out.print("Tasks could not be saved.");
+        } catch (SageException e) {
+            output += e.getMessage() + "\n";
+        }
+        output += Ui.printGoodbye();
+        return output;
+    }
+
+    public String getResponse(String input) {
+        // Handle exit case
+        if (input.equals("bye")) {
+            return saveTasksAndExit();
         }
 
-        Ui.printGoodbye();
+        // Handle all other cases including exceptions
+        try {
+            return parser.parse(input);
+        } catch (SageException e) {
+            return e.getMessage();
+        }
     }
 }

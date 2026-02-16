@@ -1,6 +1,5 @@
 package sage.tasks;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -10,7 +9,7 @@ public class TaskList {
     private final ArrayList<Task> tasks;
 
     public TaskList() {
-        this.tasks = new ArrayList<Task>();
+        this.tasks = new ArrayList<>();
     }
 
     public TaskList(ArrayList<Task> tasks) {
@@ -68,11 +67,13 @@ public class TaskList {
         return foundList;
     }
 
-    public void printTaskList() {
+    public String printTaskList() {
+        String output = "";
         int index = 1;
         for (Task task : tasks) {
-            System.out.println(index + ". " + task);
+            output += index + ". " + task + "\n";
             index++;
         }
+        return output.substring(0, output.length() - 1); // Remove last "\n"
     }
 }

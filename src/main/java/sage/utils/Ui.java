@@ -33,7 +33,6 @@ public class Ui {
         }
     }
 
-
     /**
      * Prints statement indicating successful mark.
      *
@@ -68,7 +67,7 @@ public class Ui {
                 + "\nYou've now set out to do " + taskList.getSize() + " thing(s).";
     }
 
-    public static String printAddedSuccess(TaskList taskList) {
+    public static String printAddSuccess(TaskList taskList) {
         int listSize = taskList.getSize();
         return "Got it. I've added this task:\n"
                 + taskList.getTask(listSize - 1)

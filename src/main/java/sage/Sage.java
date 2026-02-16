@@ -23,6 +23,20 @@ public class Sage {
         return Ui.printHello();
     }
 
+    public String getResponse(String input) {
+        // Handle exit case
+        if (input.equals("bye")) {
+            return saveTasksAndExit();
+        }
+
+        // Handle all other cases including exceptions
+        try {
+            return parser.parse(input);
+        } catch (SageException e) {
+            return e.getMessage();
+        }
+    }
+
     /**
      * Tries to save tasks before exiting.
      * If saving fails, will show error message, but exits anyway.
@@ -36,19 +50,5 @@ public class Sage {
         }
         output += Ui.printGoodbye();
         return output;
-    }
-
-    public String getResponse(String input) {
-        // Handle exit case
-        if (input.equals("bye")) {
-            return saveTasksAndExit();
-        }
-
-        // Handle all other cases including exceptions
-        try {
-            return parser.parse(input);
-        } catch (SageException e) {
-            return e.getMessage();
-        }
     }
 }

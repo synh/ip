@@ -24,7 +24,7 @@ public class Parser {
     public String parse(String input) throws SageException {
         parts = input.split(" ");
         CommandType commandType = CommandType.fromString(parts[0]);
-        switch(commandType) {
+        switch (commandType) {
         case LIST:
             return processListCommand();
         case MARK:
@@ -112,7 +112,7 @@ public class Parser {
     public String addTodoTask() throws SageException {
         taskList.addTask(new ToDo(input.substring(5)));
         Storage.saveTasks(taskList);
-        return Ui.printAddedSuccess(taskList);
+        return Ui.printAddSuccess(taskList);
     }
 
     public String processDeadlineCommand() throws SageException {
@@ -131,7 +131,7 @@ public class Parser {
             LocalDate deadline = LocalDate.parse(deadlinePart[1].trim());
             taskList.addTask(new Deadline(description, deadline));
             Storage.saveTasks(taskList);
-            return Ui.printAddedSuccess(taskList);
+            return Ui.printAddSuccess(taskList);
         } catch (Exception e) {
             throw SageException.invalidDate();
         }
@@ -154,7 +154,7 @@ public class Parser {
             LocalDate to = LocalDate.parse(eventPart[2].trim());
             taskList.addTask(new Event(description, from, to));
             Storage.saveTasks(taskList);
-            return Ui.printAddedSuccess(taskList);
+            return Ui.printAddSuccess(taskList);
         } catch (Exception e) {
             throw SageException.invalidDate();
         }

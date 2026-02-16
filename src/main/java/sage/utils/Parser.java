@@ -1,7 +1,6 @@
 package sage.utils;
 
 import java.time.LocalDate;
-import java.util.Scanner;
 
 import sage.SageException;
 import sage.tasks.Task;
@@ -22,57 +21,36 @@ public class Parser {
         this.taskList = taskList;
     }
 
-    public void parse() {
-        Scanner scanner = new Scanner(System.in);
-        input = scanner.nextLine();
-
-        while (!input.equals("bye")) {
-            try {
-                parts = input.split(" ");
-                CommandType commandType = CommandType.fromString(parts[0]);
-                switch(commandType) {
-                case LIST:
-                    processListCommand();
-                    break;
-                case MARK:
-                    processMarkCommand();
-                    break;
-                case UNMARK:
-                    processUnmarkCommand();
-                    break;
-                case DELETE:
-                    processDeleteCommand();
-                    break;
-                case TODO:
-                    processTodoCommand();
-                    break;
-                case DEADLINE:
-                    processDeadlineCommand();
-                    break;
-                case EVENT:
-                    processEventCommand();
-                    break;
-                case FIND:
-                    processFindCommand();
-                    break;
-                case UNKNOWN:
-                    throw SageException.unknownCommand();
-                }
-            } catch (Exception e) { // Catch all exceptions
-                System.out.print(e.getMessage());
-            }
-
-            System.out.println();
-            input = scanner.nextLine();
+    public String parse(String input) throws SageException {
+        parts = input.split(" ");
+        CommandType commandType = CommandType.fromString(parts[0]);
+        switch(commandType) {
+        case LIST:
+            return processListCommand();
+        case MARK:
+            return processMarkCommand();
+        case UNMARK:
+            return processUnmarkCommand();
+        case DELETE:
+            return processDeleteCommand();
+        case TODO:
+            return processTodoCommand();
+        case DEADLINE:
+            return processDeadlineCommand();
+        case EVENT:
+            return processEventCommand();
+        case FIND:
+            return processFindCommand();
+        default:
+            throw SageException.unknownCommand();
         }
-        scanner.close();
     }
 
-    public void processListCommand() {
-        Ui.printTaskList(taskList);
+    public String processListCommand() {
+        return Ui.printTaskList(taskList);
     }
 
-    public void processMarkCommand() throws SageException {
+    public String processMarkCommand() throws SageException {
         if (parts.length == 2 && parts[1].matches("[0-9]+")) {
             // Validate task number exists
             int index = Integer.parseInt(parts[1]); // 1-based indexing
@@ -80,7 +58,7 @@ public class Parser {
                 Task task = taskList.getTask(index - 1);
                 task.markAsDone();
                 Storage.saveTasks(taskList);
-                Ui.printMarkSuccess(task, index);
+                return Ui.printMarkSuccess(task, index);
             } else {
                 throw SageException.invalidTaskNumber();
             }
@@ -89,7 +67,7 @@ public class Parser {
         }
     }
 
-    public void processUnmarkCommand() throws SageException {
+    public String processUnmarkCommand() throws SageException {
         if (parts.length == 2 && parts[1].matches("[0-9]+")) {
             // Validate task number exists
             int index = Integer.parseInt(parts[1]); // 1-based indexing
@@ -97,7 +75,7 @@ public class Parser {
                 Task task = taskList.getTask(index - 1);
                 task.markAsUndone();
                 Storage.saveTasks(taskList);
-                Ui.printUnmarkSuccess(task, index);
+                return Ui.printUnmarkSuccess(task, index);
             } else {
                 throw SageException.invalidTaskNumber();
             }
@@ -106,7 +84,7 @@ public class Parser {
         }
     }
 
-    public void processDeleteCommand() throws SageException {
+    public String processDeleteCommand() throws SageException {
         if (parts.length == 2 && parts[1].matches("[0-9]+")) {
             // Validate task number exists
             int index = Integer.parseInt(parts[1]); // 1-based indexing
@@ -114,7 +92,7 @@ public class Parser {
                 Task task = taskList.getTask(index - 1);
                 taskList.deleteTask(index - 1);
                 Storage.saveTasks(taskList);
-                Ui.printDeleteSuccess(task, index, taskList);
+                return Ui.printDeleteSuccess(task, index, taskList);
             } else {
                 throw SageException.invalidTaskNumber();
             }
@@ -123,17 +101,17 @@ public class Parser {
         }
     }
 
-    public void processTodoCommand() throws SageException {
+    public String processTodoCommand() throws SageException {
         if (parts.length > 1) {
             taskList.addTask(new ToDo(input.substring(5)));
             Storage.saveTasks(taskList);
-            Ui.printAddedSuccess(taskList);
+            return Ui.printAddedSuccess(taskList);
         } else {
             throw SageException.invalidCommand("ToDo");
         }
     }
 
-    public void processDeadlineCommand() throws SageException {
+    public String processDeadlineCommand() throws SageException {
         if (input.matches("^deadline\\s+(\\S.+?)\\s+/by\\s+(\\S.+)")) {
             String[] deadlinePart = input.split("/by");
             if (deadlinePart.length == 2) {
@@ -142,17 +120,16 @@ public class Parser {
                     LocalDate deadline = LocalDate.parse(deadlinePart[1].trim());
                     taskList.addTask(new Deadline(description, deadline));
                     Storage.saveTasks(taskList);
-                    Ui.printAddedSuccess(taskList);
+                    return Ui.printAddedSuccess(taskList);
                 } catch (Exception e) {
                     throw SageException.invalidDate();
                 }
             }
-        } else {
-            throw SageException.invalidCommand("Deadline");
         }
+        throw SageException.invalidCommand("Deadline");
     }
 
-    public void processEventCommand() throws SageException {
+    public String processEventCommand() throws SageException {
         if (input.matches("^event\\s+(\\S.+?)\\s+/from\\s+(\\S.+?)\\s+/to\\s+(\\S.+)")) {
             String[] eventPart = input.split(" /from | /to ");
             if (eventPart.length == 3) {
@@ -162,20 +139,19 @@ public class Parser {
                     LocalDate to = LocalDate.parse(eventPart[2].trim());
                     taskList.addTask(new Event(description, from, to));
                     Storage.saveTasks(taskList);
-                    Ui.printAddedSuccess(taskList);
+                    return Ui.printAddedSuccess(taskList);
                 } catch (Exception e) {
                     throw SageException.invalidDate();
                 }
             }
-        } else {
-            throw SageException.invalidCommand("Event");
         }
+        throw SageException.invalidCommand("Event");
     }
 
-    public void processFindCommand() throws SageException {
+    public String processFindCommand() throws SageException {
         if (parts.length == 2) {
             TaskList foundList = taskList.findTask(parts[1].trim());
-            Ui.printFoundList(foundList);
+            return Ui.printFoundList(foundList);
         } else {
             throw SageException.invalidCommand("Find");
         }

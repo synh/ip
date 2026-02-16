@@ -27,7 +27,7 @@ public class Storage {
      * Loads tasks from file.
      *
      * @return List of tasks loaded from file.
-     * @throws IOException If error reading from file.
+     * @throws SageException If error reading from file.
      */
     public static TaskList loadTasks() throws SageException {
         TaskList tasks = new TaskList();

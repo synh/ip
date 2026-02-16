@@ -8,26 +8,22 @@ import sage.utils.Ui;
 import sage.tasks.TaskList;
 
 public class Sage {
-    public static void main(String[] args) throws SageException, IOException {
+    public static void main(String[] args) throws SageException {
         Ui.printHello();
 
-        TaskList taskList = new TaskList();
+        TaskList taskList;
 
         // Try loading tasks from file at startup
         try {
             taskList = Storage.loadTasks();
-        } catch (IOException e) {
-            System.out.print("Saved tasks could not be loaded.");
+        } catch (SageException e) {
+            throw new SageException("Saved tasks could not be loaded. \nReason: " + e.getMessage());
         }
 
         Parser.parse(taskList);
 
         // Save tasks before exiting
-        try {
-            Storage.saveTasks(taskList);
-        } catch (IOException e) {
-            System.out.print("Tasks could not be saved.");
-        }
+        Storage.saveTasks(taskList);
 
         Ui.printGoodbye();
     }

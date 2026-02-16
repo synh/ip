@@ -9,6 +9,7 @@ import java.util.List;
 
 import java.time.LocalDate;
 
+import sage.SageException;
 import sage.tasks.Task;
 import sage.tasks.ToDo;
 import sage.tasks.Deadline;
@@ -28,7 +29,7 @@ public class Storage {
      * @return List of tasks loaded from file.
      * @throws IOException If error reading from file.
      */
-    public static TaskList loadTasks() throws IOException {
+    public static TaskList loadTasks() throws SageException {
         TaskList tasks = new TaskList();
 
         File file = new File(FILE_PATH);
@@ -36,17 +37,13 @@ public class Storage {
             return tasks;
         }
 
-        List<String> lines = Files.readAllLines(Paths.get(FILE_PATH));
-
-        for (String line : lines) {
-            try {
-                Task task = parseTaskFromFile(line);
-                if (task != null) {
-                    tasks.addTask(task);
-                }
-            } catch (Exception e) {
-                System.out.println("Warning: Could not parse line: " + line);
+        try {
+            List<String> lines = Files.readAllLines(Paths.get(FILE_PATH));
+            for (String line : lines) {
+                processLineFromFile(line, tasks);
             }
+        } catch (IOException e) {
+            throw new SageException("Could not read from file.");
         }
 
         return tasks;
@@ -55,9 +52,9 @@ public class Storage {
     /**
      * Saves all tasks to file.
      *
-     * @throws IOException If error writing to file.
+     * @throws SageException If error writing to file.
      */
-    public static void saveTasks(TaskList tasks) throws IOException {
+    public static void saveTasks(TaskList tasks) throws SageException {
         // Create directory if it doesn't exist
         File directory = new File(DIRECTORY_PATH);
         if (!directory.exists()) {
@@ -65,11 +62,26 @@ public class Storage {
         }
 
         // Write tasks to file
-        FileWriter writer = new FileWriter(FILE_PATH);
-        for (int i = 0; i < tasks.getSize(); i++) {
-            writer.write(taskToFileString(tasks.getTask(i)) + System.lineSeparator());
+        try {
+            FileWriter writer = new FileWriter(FILE_PATH);
+            for (int i = 0; i < tasks.getSize(); i++) {
+                writer.write(taskToFileString(tasks.getTask(i)) + System.lineSeparator());
+            }
+            writer.close();
+        } catch (IOException e) {
+            throw new SageException("Tasks could not be saved.");
         }
-        writer.close();
+    }
+
+    private static void processLineFromFile(String line, TaskList tasks) throws SageException {
+        try {
+            Task task = parseTaskFromFile(line);
+            if (task != null) {
+                tasks.addTask(task);
+            }
+        } catch (Exception e) {
+            throw new SageException("Could not parse line: " + line);
+        }
     }
 
     /**

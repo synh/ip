@@ -11,7 +11,7 @@ public class SageException extends Exception {
      * @return SageException.
      */
     public static SageException invalidTaskNumber() {
-        return new SageException("That task doesn't exist, apparently.\n");
+        return new SageException("That task doesn't exist, apparently.");
     }
 
     /**
@@ -20,7 +20,7 @@ public class SageException extends Exception {
      * @return SageException.
      */
     public static SageException invalidCommand(String command) {
-        return new SageException("That's an invalid " + command + ".\n");
+        return new SageException("That's an invalid " + command + ".");
     }
 
     /**

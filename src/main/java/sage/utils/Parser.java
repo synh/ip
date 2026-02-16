@@ -42,7 +42,7 @@ public class Parser {
         case FIND:
             return processFindCommand(parts);
         default:
-            throw new SageException("I'm afraid I didn't catch that.\n");
+            throw new SageException("I'm afraid I didn't catch that.");
         }
     }
 

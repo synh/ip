@@ -46,7 +46,7 @@ public class Sage {
         try {
             Storage.saveTasks(taskList);
         } catch (SageException e) {
-            output += e.getMessage() + "\n";
+            output += e.getMessage() + System.lineSeparator();
         }
         output += Ui.printGoodbye();
         return output;

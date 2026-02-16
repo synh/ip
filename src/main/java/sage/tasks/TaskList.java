@@ -71,9 +71,9 @@ public class TaskList {
         String output = "";
         int index = 1;
         for (Task task : tasks) {
-            output += index + ". " + task + "\n";
+            output += index + ". " + task + System.lineSeparator();
             index++;
         }
-        return output.substring(0, output.length() - 1); // Remove last "\n"
+        return output.substring(0, output.length() - 1); // Remove last line separator
     }
 }

@@ -41,6 +41,7 @@ public class Ui {
      * @param index 1-indexed position of task in TaskList.
      */
     public static String printMarkSuccess(Task task, int index) {
+        assert task.getIsDone() : "task should be marked";
         return "Got it. I've marked \"" + index + ". "
                 + task.getDescription() + "\" as done.";
     }
@@ -52,6 +53,7 @@ public class Ui {
      * @param index 1-indexed position of task in TaskList.
      */
     public static String printUnmarkSuccess(Task task, int index) {
+        assert !task.getIsDone() : "task should be unmarked";
         return "Got it. I've marked \"" + index + ". "
                 + task.getDescription() + "\" as undone.";
     }
@@ -70,6 +72,7 @@ public class Ui {
 
     public static String printAddedSuccess(TaskList taskList) {
         int listSize = taskList.getSize();
+        assert listSize > 0: "listSize should be at least 1 because a task was added";
         return "Got it. I've added this task:\n"
                 + taskList.getTask(listSize - 1)
                 + "\nYou've now set out to do " + listSize + " thing(s).";

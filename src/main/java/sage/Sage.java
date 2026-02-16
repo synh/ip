@@ -35,6 +35,7 @@ public class Sage {
             output += e.getMessage() + "\n";
         }
         output += Ui.printGoodbye();
+        assert !output.isEmpty() : "output should at least include goodbye statement";
         return output;
     }
 

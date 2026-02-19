@@ -23,22 +23,6 @@ public class Sage {
         return Ui.printHello();
     }
 
-    /**
-     * Tries to save tasks before exiting.
-     * If saving fails, will show error message, but exits anyway.
-     */
-    public String saveTasksAndExit() {
-        String output = "";
-        try {
-            Storage.saveTasks(taskList);
-        } catch (SageException e) {
-            output += e.getMessage() + "\n";
-        }
-        output += Ui.printGoodbye();
-        assert !output.isEmpty() : "output should at least include goodbye statement";
-        return output;
-    }
-
     public String getResponse(String input) {
         // Handle exit case
         if (input.equals("bye")) {
@@ -51,5 +35,21 @@ public class Sage {
         } catch (SageException e) {
             return e.getMessage();
         }
+    }
+
+    /**
+     * Tries to save tasks before exiting.
+     * If saving fails, will show error message, but exits anyway.
+     */
+    public String saveTasksAndExit() {
+        String output = "";
+        try {
+            Storage.saveTasks(taskList);
+        } catch (SageException e) {
+            output += e.getMessage() + System.lineSeparator();
+        }
+        output += Ui.printGoodbye();
+        assert !output.isEmpty() : "output should at least include goodbye statement";
+        return output;
     }
 }

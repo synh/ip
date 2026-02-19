@@ -65,7 +65,8 @@ public class Storage {
         try {
             FileWriter writer = new FileWriter(FILE_PATH);
             for (int i = 0; i < tasks.getSize(); i++) {
-                writer.write(taskToFileString(tasks.getTask(i)) + System.lineSeparator());
+                String fileString = tasks.getTask(i).toFileString();
+                writer.write(fileString + System.lineSeparator());
             }
             writer.close();
         } catch (IOException e) {
@@ -92,10 +93,12 @@ public class Storage {
     private static Task parseTaskFromFile(String line) {
         String[] parts = line.split(" \\| ");
 
+        // Invalid format
         if (parts.length < 3) {
-            return null; // Invalid format
+            return null;
         }
 
+        // Create task object
         String type = parts[0];
         boolean isDone = parts[1].equals("1");
         String description = parts[2];
@@ -123,26 +126,5 @@ public class Storage {
         }
 
         return task;
-    }
-
-    /**
-     * Converts and returns a task to file format string.
-     *
-     * @return Task in string format.
-     */
-    private static String taskToFileString(Task task) {
-        String isDone = task.getIsDone() ? "1" : "0";
-        String description = task.getDescription();
-
-        if (task instanceof ToDo) {
-            return "T | " + isDone + " | " + description;
-        } else if (task instanceof Deadline) {
-            Deadline deadline = (Deadline) task;
-            return "D | " + isDone + " | " + description + " | " + deadline.getDeadline();
-        } else if (task instanceof Event) {
-            Event event = (Event) task;
-            return "E | " + isDone + " | " + description + " | " + event.getStart() + " | " + event.getEnd();
-        }
-        return ""; // Should not reach here
     }
 }

@@ -61,6 +61,7 @@ public class Parser {
         // Process valid mark command
         Task task = taskList.getTask(index - 1);
         task.markAsDone();
+        Sorter.sortTasks(taskList);
         Storage.saveTasks(taskList);
         return Ui.printMarkSuccess(task, index);
     }
@@ -74,6 +75,7 @@ public class Parser {
         // Process valid unmark command
         Task task = taskList.getTask(index - 1);
         task.markAsUndone();
+        Sorter.sortTasks(taskList);
         Storage.saveTasks(taskList);
         return Ui.printUnmarkSuccess(task, index);
     }
@@ -184,17 +186,19 @@ public class Parser {
 
 
     public String addTodoTask(String input) throws SageException {
-        taskList.addTask(new ToDo(input.substring(5)));
+        ToDo task = new ToDo(input.substring(5));
+        taskList.addTask(task);
         Storage.saveTasks(taskList);
-        return Ui.printAddSuccess(taskList);
+        return Ui.printAddSuccess(taskList, task);
     }
 
     public String addDeadlineTask(String[] deadlinePart) throws SageException {
         String description = deadlinePart[0].replaceFirst("^deadline\\s+", "").trim(); // Remove "deadline" command
         LocalDate deadline = parseDateFormat(deadlinePart[1].trim());
-        taskList.addTask(new Deadline(description, deadline));
+        Deadline task = new Deadline(description, deadline);
+        taskList.addTask(task);
         Storage.saveTasks(taskList);
-        return Ui.printAddSuccess(taskList);
+        return Ui.printAddSuccess(taskList, task);
     }
 
     public String addEventTask(String[] eventPart) throws SageException {
@@ -202,8 +206,9 @@ public class Parser {
 
         LocalDate from = parseDateFormat(eventPart[1].trim());
         LocalDate to = parseDateFormat(eventPart[2].trim());
-        taskList.addTask(new Event(description, from, to));
+        Event task = new Event(description, from, to);
+        taskList.addTask(task);
         Storage.saveTasks(taskList);
-        return Ui.printAddSuccess(taskList);
+        return Ui.printAddSuccess(taskList, task);
     }
 }

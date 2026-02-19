@@ -74,12 +74,12 @@ public class Ui {
                 + "You've now set out to do " + taskList.getSize() + " thing(s).";
     }
 
-    public static String printAddSuccess(TaskList taskList) {
+    public static String printAddSuccess(TaskList taskList, Task task) {
         int listSize = taskList.getSize();
         assert listSize > 0: "listSize should be at least 1 because a task was added";
         return "Got it. I've added this task:"
                 + System.lineSeparator()
-                + taskList.getTask(listSize - 1)
+                + task
                 + System.lineSeparator()
                 + "You've now set out to do " + listSize + " thing(s).";
     }

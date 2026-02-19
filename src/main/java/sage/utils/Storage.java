@@ -41,6 +41,7 @@ public class Storage {
             List<String> lines = Files.readAllLines(Paths.get(FILE_PATH));
             for (String line : lines) {
                 processLineFromFile(line, tasks);
+                Sorter.sortTasks(tasks); // Sort in case file is unsorted
             }
         } catch (IOException e) {
             throw new SageException("Could not read from file.");

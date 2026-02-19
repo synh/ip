@@ -1,5 +1,7 @@
 package sage.tasks;
 
+import sage.utils.Sorter;
+
 import java.util.ArrayList;
 
 /**
@@ -14,6 +16,15 @@ public class TaskList {
 
     public TaskList(ArrayList<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    /**
+     * Returns the internal ArrayList of tasks.
+     *
+     * @return The ArrayList containing all tasks.
+     */
+    public ArrayList<Task> getTasks() {
+        return tasks;
     }
 
     /**
@@ -46,6 +57,7 @@ public class TaskList {
      */
     public void addTask(Task task) {
         tasks.add(task);
+        Sorter.sortTasks(this);
     }
 
     /**

@@ -32,8 +32,14 @@ public class Event extends Task {
      */
     @Override
     public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy");
         return "[E]" + super.toString()
-                + " (from: " + this.start.format(DateTimeFormatter.ofPattern("d MMM yyyy"))
-                + " to: " + this.end.format(DateTimeFormatter.ofPattern("d MMM yyyy")) + ")";
+                + " (from: " + this.start.format(formatter)
+                + " to: " + this.end.format(formatter) + ")";
+    }
+
+    @Override
+    public String toFileString() {
+        return "E | " + (isDone ? "1" : "0") + " | " + description + " | " + start + " | " + end;
     }
 }

@@ -13,8 +13,6 @@ import sage.tasks.TaskList;
  * Parses user input.
  */
 public class Parser {
-    protected String[] parts;
-    protected String input;
     protected TaskList taskList;
 
     public Parser(TaskList taskList) {
@@ -22,138 +20,190 @@ public class Parser {
     }
 
     public String parse(String input) throws SageException {
-        parts = input.split(" ");
+        String[] parts = input.split(" ");
+
         CommandType commandType = CommandType.fromString(parts[0]);
-        switch(commandType) {
+
+        switch (commandType) {
         case LIST:
             return processListCommand();
         case MARK:
-            return processMarkCommand();
+            return processMarkCommand(parts);
         case UNMARK:
-            return processUnmarkCommand();
+            return processUnmarkCommand(parts);
         case DELETE:
-            return processDeleteCommand();
+            return processDeleteCommand(parts);
         case TODO:
-            return processTodoCommand();
+            return processTodoCommand(input, parts);
         case DEADLINE:
-            return processDeadlineCommand();
+            return processDeadlineCommand(input);
         case EVENT:
-            return processEventCommand();
+            return processEventCommand(input);
         case FIND:
-            return processFindCommand();
+            return processFindCommand(parts);
         default:
-            throw SageException.unknownCommand();
+            throw new SageException("I'm afraid I didn't catch that.");
         }
     }
+
+
 
     public String processListCommand() {
         return Ui.printTaskList(taskList);
     }
 
-    public String processMarkCommand() throws SageException {
-        if (parts.length == 2 && parts[1].matches("[0-9]+")) {
-            // Validate task number exists
-            int index = Integer.parseInt(parts[1]); // 1-based indexing
-            if (1 <= index && index <= taskList.getSize()) {
-                Task task = taskList.getTask(index - 1);
-                task.markAsDone();
-                Storage.saveTasks(taskList);
-                return Ui.printMarkSuccess(task, index);
-            } else {
-                throw SageException.invalidTaskNumber();
-            }
-        } else {
-            throw SageException.invalidCommand("Mark");
-        }
+    public String processMarkCommand(String[] parts) throws SageException {
+        validateTaskNumberFormat(parts, "Mark");
+
+        int index = Integer.parseInt(parts[1]); // 1-based indexing
+        validateTaskNumberExists(index);
+
+        // Process valid mark command
+        Task task = taskList.getTask(index - 1);
+        task.markAsDone();
+        Storage.saveTasks(taskList);
+        return Ui.printMarkSuccess(task, index);
     }
 
-    public String processUnmarkCommand() throws SageException {
-        if (parts.length == 2 && parts[1].matches("[0-9]+")) {
-            // Validate task number exists
-            int index = Integer.parseInt(parts[1]); // 1-based indexing
-            if (1 <= index && index <= taskList.getSize()) {
-                Task task = taskList.getTask(index - 1);
-                task.markAsUndone();
-                Storage.saveTasks(taskList);
-                return Ui.printUnmarkSuccess(task, index);
-            } else {
-                throw SageException.invalidTaskNumber();
-            }
-        } else {
-            throw SageException.invalidCommand("Unmark");
-        }
+    public String processUnmarkCommand(String[] parts) throws SageException {
+        validateTaskNumberFormat(parts, "Unmark");
+
+        int index = Integer.parseInt(parts[1]); // 1-based indexing
+        validateTaskNumberExists(index);
+
+        // Process valid unmark command
+        Task task = taskList.getTask(index - 1);
+        task.markAsUndone();
+        Storage.saveTasks(taskList);
+        return Ui.printUnmarkSuccess(task, index);
     }
 
-    public String processDeleteCommand() throws SageException {
-        if (parts.length == 2 && parts[1].matches("[0-9]+")) {
-            // Validate task number exists
-            int index = Integer.parseInt(parts[1]); // 1-based indexing
-            if (1 <= index && index <= taskList.getSize()) {
-                Task task = taskList.getTask(index - 1);
-                taskList.deleteTask(index - 1);
-                Storage.saveTasks(taskList);
-                return Ui.printDeleteSuccess(task, index, taskList);
-            } else {
-                throw SageException.invalidTaskNumber();
-            }
-        } else {
-            throw SageException.invalidCommand("Delete");
-        }
+    public String processDeleteCommand(String[] parts) throws SageException {
+        validateTaskNumberFormat(parts, "Delete");
+
+        int index = Integer.parseInt(parts[1]); // 1-based indexing
+        validateTaskNumberExists(index);
+
+        // Process valid delete command
+        Task task = taskList.getTask(index - 1);
+        taskList.deleteTask(index - 1);
+        Storage.saveTasks(taskList);
+        return Ui.printDeleteSuccess(task, index, taskList);
     }
 
-    public String processTodoCommand() throws SageException {
-        if (parts.length > 1) {
-            taskList.addTask(new ToDo(input.substring(5)));
-            Storage.saveTasks(taskList);
-            return Ui.printAddedSuccess(taskList);
-        } else {
+    public String processTodoCommand(String input, String[] parts) throws SageException {
+        // Validate command format
+        if (parts.length <= 1) {
             throw SageException.invalidCommand("ToDo");
         }
+
+        // Process valid todo command
+        return addTodoTask(input);
     }
 
-    public String processDeadlineCommand() throws SageException {
-        if (input.matches("^deadline\\s+(\\S.+?)\\s+/by\\s+(\\S.+)")) {
-            String[] deadlinePart = input.split("/by");
-            if (deadlinePart.length == 2) {
-                String description = deadlinePart[0].replaceFirst("^deadline\\s+", "").trim(); // Remove "deadline" command
-                try {
-                    LocalDate deadline = LocalDate.parse(deadlinePart[1].trim());
-                    taskList.addTask(new Deadline(description, deadline));
-                    Storage.saveTasks(taskList);
-                    return Ui.printAddedSuccess(taskList);
-                } catch (Exception e) {
-                    throw SageException.invalidDate();
-                }
-            }
+    public String processDeadlineCommand(String input) throws SageException {
+        // Validate command format by regex
+        if (!input.matches("^deadline\\s+(\\S.+?)\\s+/by\\s+(\\S.+)")) {
+            throw SageException.invalidCommand("Deadline");
         }
-        throw SageException.invalidCommand("Deadline");
-    }
 
-    public String processEventCommand() throws SageException {
-        if (input.matches("^event\\s+(\\S.+?)\\s+/from\\s+(\\S.+?)\\s+/to\\s+(\\S.+)")) {
-            String[] eventPart = input.split(" /from | /to ");
-            if (eventPart.length == 3) {
-                String description = eventPart[0].replaceFirst("^event\\s+", "").trim(); // Remove "event" command
-                try {
-                    LocalDate from = LocalDate.parse(eventPart[1].trim());
-                    LocalDate to = LocalDate.parse(eventPart[2].trim());
-                    taskList.addTask(new Event(description, from, to));
-                    Storage.saveTasks(taskList);
-                    return Ui.printAddedSuccess(taskList);
-                } catch (Exception e) {
-                    throw SageException.invalidDate();
-                }
-            }
+        String[] deadlinePart = input.split("/by");
+
+        // Validate command format after splitting
+        if (deadlinePart.length != 2) {
+            throw SageException.invalidCommand("Deadline");
         }
-        throw SageException.invalidCommand("Event");
+
+        // Process valid deadline command
+        return addDeadlineTask(deadlinePart);
     }
 
-    public String processFindCommand() throws SageException {
-        if (parts.length == 2) {
-            TaskList foundList = taskList.findTask(parts[1].trim());
-            return Ui.printFoundList(foundList);
-        } else {
+    public String processEventCommand(String input) throws SageException {
+        // Validate command format by regex
+        if (!input.matches("^event\\s+(\\S.+?)\\s+/from\\s+(\\S.+?)\\s+/to\\s+(\\S.+)")) {
+            throw SageException.invalidCommand("Event");
+        }
+
+        String[] eventPart = input.split(" /from | /to ");
+
+        // Validate command format after splitting
+        if (eventPart.length != 3) {
+            throw SageException.invalidCommand("Event");
+        }
+
+        // Process valid event command
+        return addEventTask(eventPart);
+    }
+
+    public String processFindCommand(String[] parts) throws SageException {
+        // Validate command format
+        if (parts.length != 2) {
             throw SageException.invalidCommand("Find");
         }
+
+        // Process valid find command
+        TaskList foundList = taskList.findTask(parts[1].trim());
+        return Ui.printFoundList(foundList);
+    }
+
+
+
+    /**
+     * Validates format of commands including index of task already in tasklist.
+     * List of commands: Mark, Unmark, Delete.
+     *
+     * @param command Command to be validated with first letter capitalised.
+     * @throws SageException
+     */
+    public void validateTaskNumberFormat(String[] parts, String command) throws SageException {
+        if (parts.length != 2 || !parts[1].matches("[0-9]+")) {
+            throw SageException.invalidCommand(command);
+        }
+    }
+
+    /**
+     * Validate that task is in tasklist.
+     *
+     * @param index 1-based indexing.
+     * @throws SageException
+     */
+    public void validateTaskNumberExists(int index) throws SageException {
+        if (index < 1 || index > taskList.getSize()) {
+            throw SageException.invalidTaskNumber();
+        }
+    }
+
+    public static LocalDate parseDateFormat(String dateString) throws SageException {
+        try {
+            return LocalDate.parse(dateString.trim());
+        } catch (Exception e) {
+            throw SageException.invalidDate();
+        }
+    }
+
+
+
+    public String addTodoTask(String input) throws SageException {
+        taskList.addTask(new ToDo(input.substring(5)));
+        Storage.saveTasks(taskList);
+        return Ui.printAddSuccess(taskList);
+    }
+
+    public String addDeadlineTask(String[] deadlinePart) throws SageException {
+        String description = deadlinePart[0].replaceFirst("^deadline\\s+", "").trim(); // Remove "deadline" command
+        LocalDate deadline = parseDateFormat(deadlinePart[1].trim());
+        taskList.addTask(new Deadline(description, deadline));
+        Storage.saveTasks(taskList);
+        return Ui.printAddSuccess(taskList);
+    }
+
+    public String addEventTask(String[] eventPart) throws SageException {
+        String description = eventPart[0].replaceFirst("^event\\s+", "").trim(); // Remove "event" command
+
+        LocalDate from = parseDateFormat(eventPart[1].trim());
+        LocalDate to = parseDateFormat(eventPart[2].trim());
+        taskList.addTask(new Event(description, from, to));
+        Storage.saveTasks(taskList);
+        return Ui.printAddSuccess(taskList);
     }
 }

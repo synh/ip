@@ -11,7 +11,7 @@ public class SageException extends Exception {
      * @return SageException.
      */
     public static SageException invalidTaskNumber() {
-        return new SageException("That task doesn't exist, apparently.\n");
+        return new SageException("That task doesn't exist, apparently.");
     }
 
     /**
@@ -20,7 +20,7 @@ public class SageException extends Exception {
      * @return SageException.
      */
     public static SageException invalidCommand(String command) {
-        return new SageException("That's an invalid " + command + ".\n");
+        return new SageException("That's an invalid " + command + ".");
     }
 
     /**
@@ -30,14 +30,5 @@ public class SageException extends Exception {
      */
     public static SageException invalidDate() {
         return new SageException("That's an invalid date. Date should be in YYYY-MM-DD format.");
-    }
-
-    /**
-     * Returns SageException with error message for remaining unknown errors.
-     *
-     * @return SageException.
-     */
-    public static SageException unknownCommand() {
-        return new SageException("I'm afraid I didn't catch that.\n");
     }
 }

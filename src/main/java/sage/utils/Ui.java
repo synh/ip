@@ -9,7 +9,9 @@ import sage.tasks.TaskList;
 public class Ui {
 
     public static String printHello() {
-        return "Hello there, Sage here.\n How are you doing?";
+        return "Hello there, Sage here."
+                + System.lineSeparator()
+                + "How are you doing?";
     }
 
     /**
@@ -19,7 +21,8 @@ public class Ui {
         if (tasklist.isEmpty()) {
             return "Oh, you have nothing you set out to do. Enjoy your day.";
         } else {
-            return "These are what you set out to do:\n"
+            return "These are what you set out to do:"
+                    + System.lineSeparator()
                     + tasklist.printTaskList();
         }
     }
@@ -28,11 +31,11 @@ public class Ui {
         if (foundList.isEmpty()) {
             return "Oh, there are no matching tasks.";
         } else {
-            return "Here are the matching tasks in your list:\n"
+            return "Here are the matching tasks in your list:"
+                    + System.lineSeparator()
                     + foundList.printTaskList();
         }
     }
-
 
     /**
      * Prints statement indicating successful mark.
@@ -65,14 +68,17 @@ public class Ui {
     public static String printDeleteSuccess(Task task, int index, TaskList taskList) {
         return "Got it. I've removed \"" + index + ". "
                 + task.getDescription() + "\"."
-                + "\nYou've now set out to do " + taskList.getSize() + " thing(s).";
+                + System.lineSeparator()
+                + "You've now set out to do " + taskList.getSize() + " thing(s).";
     }
 
-    public static String printAddedSuccess(TaskList taskList) {
+    public static String printAddSuccess(TaskList taskList) {
         int listSize = taskList.getSize();
-        return "Got it. I've added this task:\n"
+        return "Got it. I've added this task:"
+                + System.lineSeparator()
                 + taskList.getTask(listSize - 1)
-                + "\nYou've now set out to do " + listSize + " thing(s).";
+                + System.lineSeparator()
+                + "You've now set out to do " + listSize + " thing(s).";
     }
 
     public static String printGoodbye() {

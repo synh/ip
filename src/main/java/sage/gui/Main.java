@@ -25,6 +25,7 @@ public class Main extends Application {
             Scene scene = new Scene(ap);
             stage.setScene(scene);
             fxmlLoader.<MainWindow>getController().setSage(sage);  // inject the Sage instance
+            stage.setTitle("Sage");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

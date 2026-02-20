@@ -1,7 +1,7 @@
 package sage.tasks;
 
 /**
- * Stores a task that has a description, and a boolean indicating completion.
+ * Stores a Task that has a description, and a boolean indicating completion.
  */
 public abstract class Task {
     protected String description;

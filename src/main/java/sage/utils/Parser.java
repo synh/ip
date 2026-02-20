@@ -19,6 +19,12 @@ public class Parser {
         this.taskList = taskList;
     }
 
+    /**
+     * Parses user input and returns chatbot response.
+     * @param input user input
+     * @return String containing chatbot response.
+     * @throws SageException if parsing fails.
+     */
     public String parse(String input) throws SageException {
         String[] parts = input.split(" ");
 
@@ -47,11 +53,21 @@ public class Parser {
     }
 
 
-
+    /**
+     * Handles list command.
+     *
+     * @return String of formatted list.
+     */
     public String processListCommand() {
         return Ui.printTaskList(taskList);
     }
 
+    /**
+     * Handles mark task command.
+     * @param parts user input split by whitespace.
+     * @return String declaring success of mark command.
+     * @throws SageException
+     */
     public String processMarkCommand(String[] parts) throws SageException {
         validateTaskNumberFormat(parts, "Mark");
 
@@ -66,6 +82,12 @@ public class Parser {
         return Ui.printMarkSuccess(task, index);
     }
 
+    /**
+     * Handles unmark task command.
+     * @param parts user input split by whitespace.
+     * @return String declaring success of unmark command.
+     * @throws SageException
+     */
     public String processUnmarkCommand(String[] parts) throws SageException {
         validateTaskNumberFormat(parts, "Unmark");
 
@@ -80,6 +102,12 @@ public class Parser {
         return Ui.printUnmarkSuccess(task, index);
     }
 
+    /**
+     * Handles delete task command.
+     * @param parts user input split by whitespace.
+     * @return String declaring success of delete command.
+     * @throws SageException
+     */
     public String processDeleteCommand(String[] parts) throws SageException {
         validateTaskNumberFormat(parts, "Delete");
 
@@ -93,6 +121,13 @@ public class Parser {
         return Ui.printDeleteSuccess(task, index, taskList);
     }
 
+    /**
+     * Handles create todo task command.
+     * @param input user input.
+     * @param parts user input split by whitespace.
+     * @return String declaring success of create command.
+     * @throws SageException
+     */
     public String processTodoCommand(String input, String[] parts) throws SageException {
         // Validate command format
         if (parts.length <= 1) {
@@ -103,6 +138,11 @@ public class Parser {
         return addTodoTask(input);
     }
 
+    /**
+     * Handles create deadline task command.
+     * @return String declaring success of create command.
+     * @throws SageException
+     */
     public String processDeadlineCommand(String input) throws SageException {
         // Validate command format by regex
         if (!input.matches("^deadline\\s+(\\S.+?)\\s+/by\\s+(\\S.+)")) {
@@ -120,6 +160,11 @@ public class Parser {
         return addDeadlineTask(deadlinePart);
     }
 
+    /**
+     * Handles create event task command.
+     * @return String declaring success of create command.
+     * @throws SageException
+     */
     public String processEventCommand(String input) throws SageException {
         // Validate command format by regex
         if (!input.matches("^event\\s+(\\S.+?)\\s+/from\\s+(\\S.+?)\\s+/to\\s+(\\S.+)")) {
@@ -137,6 +182,12 @@ public class Parser {
         return addEventTask(eventPart);
     }
 
+    /**
+     * Handles find task command.
+     * @param parts user input split by whitespace.
+     * @return String of formatted list of tasks found.
+     * @throws SageException
+     */
     public String processFindCommand(String[] parts) throws SageException {
         // Validate command format
         if (parts.length != 2) {
@@ -175,6 +226,9 @@ public class Parser {
         }
     }
 
+    /**
+     * Converts String into LocalDate object if possible.
+     */
     public static LocalDate parseDateFormat(String dateString) throws SageException {
         try {
             return LocalDate.parse(dateString.trim());

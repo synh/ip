@@ -5,10 +5,17 @@ import sage.utils.Storage;
 import sage.utils.Ui;
 import sage.tasks.TaskList;
 
+/**
+ * Handles main logic of Sage chatbot.
+ */
 public class Sage {
     protected TaskList taskList = new TaskList();
     protected Parser parser;
 
+    /**
+     * Loads tasks saved from local file if exists.
+     * @throws SageException
+     */
     public void loadTasks() throws SageException {
         // Try loading tasks from file at startup
         try {
@@ -23,6 +30,9 @@ public class Sage {
         return Ui.printHello();
     }
 
+    /**
+     * Takes in user input, parses and returns chatbot response.
+     */
     public String getResponse(String input) {
         // Handle exit case
         if (input.equals("bye")) {

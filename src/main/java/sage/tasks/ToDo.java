@@ -13,6 +13,10 @@ public class ToDo extends Task {
         return "[T]" + super.toString();
     }
 
+    /**
+     * Converts Task data into String format suitable for storing data.
+     * @return String to write to file.
+     */
     @Override
     public String toFileString() {
         return "T | " + (isDone ? "1" : "0") + " | " + description;

@@ -3,6 +3,9 @@ package sage.tasks;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Stores a Task that has a deadline.
+ */
 public class Deadline extends Task {
     protected LocalDate deadline;
 
@@ -15,6 +18,12 @@ public class Deadline extends Task {
         return this.deadline;
     }
 
+    /**
+     * Returns Deadline formatted as a String.
+     * Includes deadline indicator "D", description and deadline.
+     *
+     * @return Deadline formatted as a String.
+     */
     @Override
     public String toString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy");

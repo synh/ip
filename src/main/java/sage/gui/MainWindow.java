@@ -32,8 +32,8 @@ public class MainWindow extends AnchorPane {
 
     private Sage sage;
 
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/user_red.jpg"));
-    private Image sageImage = new Image(this.getClass().getResourceAsStream("/images/sage_blue.jpg"));
+    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/user.jpg"));
+    private Image sageImage = new Image(this.getClass().getResourceAsStream("/images/sage.jpg"));
 
     @FXML
     public void initialize() {

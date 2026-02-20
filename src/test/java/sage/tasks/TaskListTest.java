@@ -18,5 +18,17 @@ public class TaskListTest {
         taskList.deleteTask(0);
 
         assertEquals(0, taskList.getSize());
+
+        ArrayList<Task> taskArray2 = new ArrayList<Task>();
+        taskArray.add(new ToDo("todo1"));
+        taskArray.add(new ToDo("todo2"));
+        taskArray.add(new ToDo("todo3"));
+
+        taskList = new TaskList(taskArray);
+        taskList.deleteTask(0);
+        taskList.deleteTask(0);
+
+        assertEquals(1, taskList.getSize());
+
     }
 }

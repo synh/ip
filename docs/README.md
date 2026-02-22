@@ -1,10 +1,10 @@
 # Sage User Guide
 
-[Product screenshot](Ui.png)
-
 Sage is an old man who spends his days by the sea, letting the breeze carry his thoughts.
 If you ask nicely, he'll help you keep track of your todolist—with quiet wisdom and
 zero judgment. He prefers the simple things in life, much like this task tracker.  
+
+<img src="Ui.png">
 
 ### 3 types of tasks:
 - Todo (task description)
@@ -17,6 +17,7 @@ zero judgment. He prefers the simple things in life, much like this task tracker
 - Ability to **unmark** tasks as incomplete
 - Ability to **delete** tasks
 - Ability to **find** tasks matching keywords
+- Automatic sorting by task type, completion status, date and alphabetical order
 
 ## Adding ToDos
 Add a ToDo containing the description of the task.

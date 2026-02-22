@@ -33,7 +33,7 @@ public class MainWindow extends AnchorPane {
     private Sage sage;
 
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/user.jpg"));
-    private Image sageImage = new Image(this.getClass().getResourceAsStream("/images/sage.jpg"));
+    private Image sageImage = new Image(this.getClass().getResourceAsStream("/images/sage.png"));
 
     @FXML
     public void initialize() {

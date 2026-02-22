@@ -48,6 +48,7 @@ application {
 
 shadowJar {
     archiveBaseName = "Sage"
+    archiveFileName = 'sage.jar'
     archiveClassifier = null
 }
 
